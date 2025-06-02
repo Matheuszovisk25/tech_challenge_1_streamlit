@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import requests
@@ -17,10 +16,23 @@ ENDPOINTS = {
     "Comercialização": "comercializacoes"
 }
 
+def wake_up_api():
+    try:
+        r = requests.get(f"{API_URL}", timeout=5)
+        if r.status_code == 200:
+            mensagem = r.json().get("mensagem", "API acordada!")
+            st.info(mensagem)
+        else:
+            st.warning("Aguardando API...")
+    except:
+        st.warning("Iniciando a API... aguarde alguns segundos.")
+
 st.set_page_config(page_title="Viticultura Dashboard", layout="wide")
 
 if "token" not in st.session_state:
     st.session_state.token = None
+
+wake_up_api()
 
 def autenticar_usuario(email, senha):
     payload = {"username": email, "password": senha}
@@ -122,7 +134,6 @@ else:
         produto_col = detectar_coluna_produto(df)
         if produto_col:
             df = df[~df[produto_col].str.fullmatch(r"[A-ZÇÃÂÊÁÉÍÓÚÜÑ ]+")]
-
 
         st.sidebar.markdown("### Filtros")
         if "ano" in df.columns:
