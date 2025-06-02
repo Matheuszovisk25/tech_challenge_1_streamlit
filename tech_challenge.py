@@ -109,10 +109,9 @@ if not st.session_state.token:
 
 else:
     st.sidebar.success("Autenticado")
-    if st.sidebar.button("Sair"):
-        st.session_state.token = None
-        st.rerun()
-
+    
+    st.sidebar.link_button("API DOCS", url="https://techchallengeapi.onrender.com/docs")
+    
     menu = st.sidebar.radio("Selecionar categoria", list(ENDPOINTS.keys()))
     endpoint = ENDPOINTS[menu]
 
@@ -144,7 +143,9 @@ else:
             "Tabela", "Barra", "Linha", "Top 5", "Comparação"
         ])
 
-        
+        if st.sidebar.button("Logout", type="primary"):
+            st.session_state.token = None
+            st.rerun()       
 
         with aba_tabela:
             st.subheader("Tabela de Dados")
