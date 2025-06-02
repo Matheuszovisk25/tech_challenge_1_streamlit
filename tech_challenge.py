@@ -32,8 +32,6 @@ st.set_page_config(page_title="Viticultura Dashboard", layout="wide")
 if "token" not in st.session_state:
     st.session_state.token = None
 
-wake_up_api()
-
 def autenticar_usuario(email, senha):
     payload = {"username": email, "password": senha}
     try:
@@ -91,6 +89,8 @@ def aplicar_filtros(df, produto_col, busca, anos, produtos):
     return df
 
 if not st.session_state.token:
+    wake_up_api()
+
     st.markdown("<h2 style='text-align: center;'>🔐 Acesso Restrito</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; color: gray;'>Faça login ou crie uma nova conta para continuar</p>", unsafe_allow_html=True)
 
